@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Log
+  - Knife
   layers:
   - Default
   - TransparentFX
@@ -40,4 +42,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3020777631
+    locked: 0
+  - name: Knives
+    uniqueID: 3537926965
+    locked: 0
+  - name: Log
+    uniqueID: 3563001397
+    locked: 0
+  - name: Particles
+    uniqueID: 4190085947
     locked: 0
