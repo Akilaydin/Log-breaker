@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Log
   - Knife
+  - Apple
   layers:
   - Default
   - TransparentFX

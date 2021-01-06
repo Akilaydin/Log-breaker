@@ -6,15 +6,16 @@ public class KnifeHitForMenu : MonoBehaviour
 {
     private Rigidbody2D knifeRB;
     private BoxCollider2D knifeCollider;
-   
+
 
     private void Awake()
     {
         knifeRB = GetComponent<Rigidbody2D>();
         knifeCollider = GetComponent<BoxCollider2D>();
     }
-    public void ShootKnife(){
-        knifeRB.AddForce(new Vector2(0,40), ForceMode2D.Impulse);
+    public void ShootKnife()
+    {
+        knifeRB.AddForce(new Vector2(0, 40), ForceMode2D.Impulse);
         knifeRB.gravityScale = 1;
     }
 

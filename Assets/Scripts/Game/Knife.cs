@@ -6,10 +6,11 @@ public class Knife : MonoBehaviour
 {
     [SerializeField]
     private Vector2 throwForce;
-    private bool isActive = true;
+    public bool isActive = true;
     private Rigidbody2D knifeRB;
     private BoxCollider2D knifeCollider;
-   
+    private bool hasHitApple = false;
+
 
     private void Awake()
     {
@@ -28,7 +29,7 @@ public class Knife : MonoBehaviour
         }
     }
 
-    
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (isActive == false)
@@ -40,6 +41,7 @@ public class Knife : MonoBehaviour
 
         if (other.collider.tag == "Log")
         {
+            
             GetComponent<ParticleSystem>().Play();
 
             knifeRB.velocity = new Vector2(0, 0);
