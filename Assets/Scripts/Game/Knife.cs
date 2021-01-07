@@ -18,9 +18,12 @@ public class Knife : MonoBehaviour
         knifeCollider = GetComponent<BoxCollider2D>();
     }
 
+    private void Start() {
+        Vibration.Init();
+    }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && isActive == true && GameController.instance.canThrow == true)
+        if (Input.GetMouseButtonDown(0) && isActive == true && GameController.instance.canThrow == true && GameController.instance.isGameActive == true)
         {
             knifeRB.AddForce(throwForce, ForceMode2D.Impulse);
             knifeRB.gravityScale = 1;
@@ -58,6 +61,6 @@ public class Knife : MonoBehaviour
             knifeRB.velocity = new Vector2(knifeRB.velocity.x, -2);
             GameController.instance.GameOver(false);
         }
-        Handheld.Vibrate();
+        Vibration.VibratePop();
     }
 }

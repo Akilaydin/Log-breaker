@@ -23,7 +23,7 @@ public class NotificationController : MonoBehaviour
         var notification = new AndroidNotification();
         notification.Title = "Back to game!";
         notification.Text = "So many logs have to be broken.\nShow them all!";
-        notification.FireTime = System.DateTime.Now.AddSeconds(15);
+        notification.FireTime = System.DateTime.Now.AddHours(8);
 
         AndroidNotificationCenter.SendNotification(notification, "channel_id");
     }

@@ -13,6 +13,9 @@ public class GameUI : MonoBehaviour
     private GameObject knifeIcon;
     [SerializeField]
     private Color usedKnifeColor;
+    [SerializeField]
+    private Text levelText;
+    private int knifeIndexToChange;
 
     public void ShowRestartButton()
     {
@@ -21,16 +24,44 @@ public class GameUI : MonoBehaviour
 
     public void SetKnivesCount(int count)
     {
+        DestroyKnivesInPanel();
         for (int i = 0; i < count; i++)
         {
             Instantiate(knifeIcon, panelKnives.transform);
         }
     }
 
-    private int knifeIndexToChange = 0;
+    private void DestroyKnivesInPanel()
+    {
+        try
+        {
+            knifeIndexToChange = 0;
+            for (int i = 0; i < panelKnives.GetComponentsInChildren<Image>().Length; i++)
+            {
+                foreach (var img in panelKnives.GetComponentsInChildren<Image>())
+                {
+                    Destroy(img.gameObject);
+                }
+            }
+        }
+        catch
+        {
+            Debug.Log("Smth went wrong while destroing knives");
+            return;
+        }
 
+    }
+
+    
     public void DecrementKnives()
     {
-        panelKnives.transform.GetChild(knifeIndexToChange++).GetComponent<Image>().color = usedKnifeColor;
+        panelKnives.transform.GetChild(knifeIndexToChange).GetComponent<Image>().color = usedKnifeColor;
+        knifeIndexToChange++;
+    }
+
+    public void IncreaseLevel()
+    {
+
+        levelText.text = "Level " + GameController.instance.levelIndex;
     }
 }

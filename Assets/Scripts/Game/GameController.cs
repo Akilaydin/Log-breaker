@@ -11,16 +11,18 @@ public class GameController : MonoBehaviour
     public GameUI gameUI { get; private set; }
     [HideInInspector]
     public bool canThrow = true;
-    [SerializeField]
-    private GameObject logEngine;
+    
     [SerializeField]
     private float throwDelay = 0.3f;
     [HideInInspector]
     public int gameScore;
     [HideInInspector]
     public int appleScore;
+    public int levelIndex;
 
     [Header("Exploding")]
+    [SerializeField]
+    private GameObject cameraShakeExplosion;
     [SerializeField]
     private GameObject log;
     private Explodable explodable;
@@ -30,16 +32,12 @@ public class GameController : MonoBehaviour
     private Vector2 knifeSpawnPos;
     [SerializeField]
     private GameObject knife;
-    [SerializeField]
-    private GameObject knifeToLog;
-    [SerializeField]
     private int knivesCount;
+    [SerializeField]
+    private int minKnivesAtLevel,maxKnivesAtLevel;
+    public bool isGameActive;
 
-    [Header("ApplesSpawning")]
-    [SerializeField]
-    private GameObject apple;
-    [SerializeField]
-    private AppleObject appleObject;
+    
 
     private void Awake()
     {
@@ -50,15 +48,22 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        isGameActive = true;
+        Time.timeScale = 1;
+        knivesCount = Random.Range(minKnivesAtLevel,maxKnivesAtLevel);
         gameUI.SetKnivesCount(knivesCount);
         KnifeSpawn();
         appleScore = Database.instance.LoadAppleScore();
         gameScore = 0;
+        levelIndex = 1;
+        ScoresController.instance.RefreshScore(gameScore, appleScore);
+        Vibration.Init();
     }
 
-
+  
     public void OnAccurateKnifeHit()
     {
+        
         gameScore++;
         if (gameScore > Database.instance.LoadGameScore())
         {
@@ -74,6 +79,10 @@ public class GameController : MonoBehaviour
         {
             GameOver(true);
         }
+    }
+    private void CameraShake(){
+        GameObject cameraShaker = Instantiate(cameraShakeExplosion,transform.position,Quaternion.identity);
+        Destroy(cameraShaker,5);
     }
 
     public void OnAppleHit()
@@ -95,63 +104,42 @@ public class GameController : MonoBehaviour
     }
     public void GameOver(bool win)
     {
-        Handheld.Vibrate();
+        Vibration.Vibrate(300);
         StartCoroutine(GameOverCoroutine(win));
     }
 
     private IEnumerator GameOverCoroutine(bool win)
     {
+        
         if (win)
         {
+            CameraShake();
             LogExplosion();
+            
             yield return new WaitForSecondsRealtime(0.4f);
-
-            GameObject logObj = (GameObject)Instantiate(log, new Vector2(0, 2), Quaternion.identity); //Creating a new Log
-            GameObject.Find("LogEngine").GetComponent<WheelJoint2D>().connectedBody = logObj.GetComponent<Rigidbody2D>();
-            logObj.transform.SetParent(logEngine.transform);
-            CreateKnives(logObj);
-            InstantiateApple(logObj);
+            StartNewLevel();
         }
         else
         {
+            isGameActive = false;
             gameUI.ShowRestartButton();
         }
+    }
+
+    private void StartNewLevel(){
+        if (isGameActive){
+            knivesCount = Random.Range(minKnivesAtLevel,maxKnivesAtLevel);
+            gameUI.SetKnivesCount(knivesCount);
+            KnifeSpawn();
+            SpawnApplesAndKnives.instance.CreateNewLog();
+            levelIndex++;
+            gameUI.IncreaseLevel();
+        }
+        
     }
     private void LogExplosion()
     {
         Destroy(GameObject.FindGameObjectWithTag("Log"));
-
-        // explodable.explode();
-        // ExplosionForce ef = GameObject.FindObjectOfType<ExplosionForce>();
-        // ef.doExplosion(transform.position);
-    }
-
-    private void CreateKnives(GameObject logObj)
-    {
-        for (int i = 0; i < Random.Range(1, 4); i++)
-        { //Generating knives in the log
-            GameObject knifeObj = (GameObject)Instantiate(knifeToLog, knifeToLog.transform.position, Quaternion.identity);
-            knifeObj.GetComponent<Knife>().isActive = false;
-            //knifeObj.transform.SetParent(logObj.transform);
-           
-        }
-    }
-    private void InstantiateApple(GameObject logObj)
-    {
-        float random = Random.Range(0f, 1f);
-        if (appleObject.probabilityToAppear / 100 > random)
-        {
-            Instantiate(apple, apple.transform.position, Quaternion.identity);
-        }
-        else
-        {
-            return;
-        }
-    }
-    private void LoadNextLevel()
-    {
-        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(nextLevelIndex);
     }
     public void RestartLevel()
     {

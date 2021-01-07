@@ -29,6 +29,7 @@ public class ScoresController : MonoBehaviour
         if (scoreText == null || applesText == null){
             scoreText = GameObject.Find("ScoreText").GetComponent<Text>();
             applesText = GameObject.Find("ApplesText").GetComponent<Text>();
+            scoreText.alignment = TextAnchor.MiddleLeft;
         }
         scoreText.text = gameScore.ToString();
         applesText.text = appleScore.ToString();

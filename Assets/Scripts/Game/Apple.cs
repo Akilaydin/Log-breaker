@@ -6,7 +6,8 @@ public class Apple : MonoBehaviour
 { 
     void Start()
     {
-        transform.SetParent(GameObject.Find("Log").transform);
+        //transform.Rotate(new Vector3(0,0,180));
+        transform.SetParent(GameObject.FindGameObjectWithTag("Log").transform);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
