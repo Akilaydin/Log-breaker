@@ -18,6 +18,7 @@ public class LogDestroyer : MonoBehaviour
             rb.gravityScale = 1.4f;
             rb.AddTorque(torqueForce);
             rb.AddForce(new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce)));
+            Destroy(rb.gameObject,5f);
         }
     }
 

@@ -6,9 +6,7 @@ using UnityEngine.UI;
 public class ScoresController : MonoBehaviour
 {
     public static ScoresController instance;
-    [SerializeField]
-    private Text scoreText;
-    [SerializeField]
+    private Text scoreText;    
     private Text applesText;
     private void Awake()
     {
