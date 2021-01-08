@@ -9,7 +9,7 @@ public class NotificationController : MonoBehaviour
     void Start()
     {
 
-        AndroidNotificationCenter.CancelAllNotifications();
+        AndroidNotificationCenter.CancelAllNotifications(); //If player enter the game, clear all scheduled notifications and make a new one.
 
         var channel = new AndroidNotificationChannel()
         {
@@ -20,10 +20,10 @@ public class NotificationController : MonoBehaviour
         };
         AndroidNotificationCenter.RegisterNotificationChannel(channel);
 
-        var notification = new AndroidNotification();
+        var notification = new AndroidNotification(); //Fire notification every eight hours.
         notification.Title = "Back to game!";
         notification.Text = "So many logs have to be broken.\nShow them all!";
-        notification.FireTime = System.DateTime.Now.AddHours(8);
+        notification.FireTime = System.DateTime.Now.AddHours(8); 
 
         AndroidNotificationCenter.SendNotification(notification, "channel_id");
     }

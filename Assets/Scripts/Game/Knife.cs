@@ -17,7 +17,8 @@ public class Knife : MonoBehaviour
         knifeCollider = GetComponent<BoxCollider2D>();
     }
 
-    private void Start() {
+    private void Start()
+    {
         Vibration.Init();
     }
     private void Update()
@@ -31,7 +32,6 @@ public class Knife : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (isActive == false)
@@ -43,12 +43,12 @@ public class Knife : MonoBehaviour
 
         if (other.collider.tag == "Log")
         {
-            
+
             GetComponent<ParticleSystem>().Play();
 
             knifeRB.velocity = new Vector2(0, 0);
-            knifeRB.bodyType = RigidbodyType2D.Kinematic;
-            this.transform.SetParent(other.collider.transform);
+            knifeRB.bodyType = RigidbodyType2D.Kinematic; //To prevent external forces.
+            this.transform.SetParent(other.collider.transform); //To make the knife rotate with the log.
 
             knifeCollider.offset = new Vector2(knifeCollider.offset.x, -0.45f);
             knifeCollider.size = new Vector2(knifeCollider.size.x, 1.1f);

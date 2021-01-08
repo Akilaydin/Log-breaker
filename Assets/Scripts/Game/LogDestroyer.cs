@@ -11,14 +11,15 @@ public class LogDestroyer : MonoBehaviour
     public void DestroyLog()
     {
         List<Rigidbody2D> rbs = new List<Rigidbody2D>();
-        rbs.AddRange(gameObject.GetComponentsInChildren<Rigidbody2D>());
-        gameObject.transform.DetachChildren();
-        foreach (var rb in rbs)
+        rbs.AddRange(gameObject.GetComponentsInChildren<Rigidbody2D>()); //Getting all parts of the log
+        gameObject.transform.DetachChildren(); //Removing the transform dependency of the pieces to log
+
+        foreach (var rb in rbs) //One by one adding force and torque to the pieces.
         {
             rb.gravityScale = 1.4f;
             rb.AddTorque(torqueForce);
             rb.AddForce(new Vector2(Random.Range(-explosionForce, explosionForce), Random.Range(-explosionForce, explosionForce)));
-            Destroy(rb.gameObject,5f);
+            Destroy(rb.gameObject, 5f);
         }
     }
 

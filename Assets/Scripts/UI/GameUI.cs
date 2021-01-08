@@ -46,13 +46,13 @@ public class GameUI : MonoBehaviour
         }
         catch
         {
-            Debug.Log("Smth went wrong while destroing knives");
+            Debug.Log("Something went wrong while destroing knives");
             return;
         }
 
     }
 
-    
+
     public void DecrementKnives()
     {
         panelKnives.transform.GetChild(knifeIndexToChange).GetComponent<Image>().color = usedKnifeColor;

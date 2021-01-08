@@ -6,7 +6,6 @@ public class Apple : MonoBehaviour
 { 
     void Start()
     {
-        //transform.Rotate(new Vector3(0,0,180));
         transform.SetParent(GameObject.FindGameObjectWithTag("Log").transform);
     }
 

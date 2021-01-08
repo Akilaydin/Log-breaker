@@ -12,8 +12,7 @@ public class LogRotation : MonoBehaviour
     }
 
     [SerializeField]
-    private RotationPattern[] rotationPattern;
-
+    private RotationPattern[] rotationPattern; //To configure log rotations
     private WheelJoint2D wheelJoint;
     private JointMotor2D motor;
 
@@ -24,7 +23,7 @@ public class LogRotation : MonoBehaviour
         StartCoroutine(RotateLog());
     }
 
-    private IEnumerator RotateLog()
+    private IEnumerator RotateLog() //Goes through all of the patterns an rotates the log according to them.
     {
         int rotIndex = 0;
         while (true)

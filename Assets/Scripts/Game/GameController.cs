@@ -9,11 +9,12 @@ public class GameController : MonoBehaviour
 
     public static GameController instance { get; private set; }
     public GameUI gameUI { get; private set; }
+
     [HideInInspector]
     public bool canThrow = true;
-    
     [SerializeField]
     private float throwDelay = 0.3f;
+
     [HideInInspector]
     public int gameScore;
     [HideInInspector]
@@ -38,10 +39,10 @@ public class GameController : MonoBehaviour
     private GameObject knife;
     private int knivesCount;
     [SerializeField]
-    private int minKnivesAtLevel,maxKnivesAtLevel;
-    public bool isGameActive;
+    private int minKnivesAtLevel, maxKnivesAtLevel; //To randomize levels.
+    public bool isGameActive; //To prevent bugs and exploits.
 
-    
+
 
     private void Awake()
     {
@@ -53,22 +54,21 @@ public class GameController : MonoBehaviour
     {
         isGameActive = true;
         Time.timeScale = 1;
-        knivesCount = Random.Range(minKnivesAtLevel,maxKnivesAtLevel);
+        knivesCount = Random.Range(minKnivesAtLevel, maxKnivesAtLevel);
         gameUI.SetKnivesCount(knivesCount);
         KnifeSpawn();
         appleScore = Database.instance.LoadAppleScore();
         gameScore = 0;
         levelIndex = 1;
         ScoresController.instance.RefreshScore(gameScore, appleScore);
-        Vibration.Init();
+
+        Vibration.Init(); //To perform vibrations.
     }
 
-  
-    public void OnAccurateKnifeHit()
-    {
-        
-        gameScore++;
 
+    public void OnAccurateKnifeHit() //Occours when knife hits the log.
+    {
+        gameScore++;
         if (gameScore > Database.instance.LoadGameScore()) //To save only the highest score.
         {
             Database.instance.SaveGameScore(gameScore);
@@ -85,9 +85,10 @@ public class GameController : MonoBehaviour
             GameOver(true);
         }
     }
-    private void CameraShake(){
-        GameObject cameraShaker = Instantiate(cameraShakeExplosion,transform.position,Quaternion.identity);
-        Destroy(cameraShaker,5);
+    private void CameraShake()
+    {
+        GameObject cameraShaker = Instantiate(cameraShakeExplosion, transform.position, Quaternion.identity);
+        Destroy(cameraShaker, 5);
     }
 
     public void OnAppleHit()
@@ -113,9 +114,9 @@ public class GameController : MonoBehaviour
         StartCoroutine(GameOverCoroutine(win));
     }
 
-    private IEnumerator GameOverCoroutine(bool win)
+    private IEnumerator GameOverCoroutine(bool win) //Coroutine to make some time for destructible log.
     {
-        
+
         if (win)
         {
             CameraShake();
@@ -130,32 +131,34 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void StartNewLevel(){
-        if (isGameActive && levelIndex % bossLevelIndex != 0){ //If not boss fight
-            knivesCount = Random.Range(minKnivesAtLevel,maxKnivesAtLevel);
+    private void StartNewLevel()
+    {
+        if (isGameActive && levelIndex % bossLevelIndex != 0) //If not boss fight
+        { 
+            knivesCount = Random.Range(minKnivesAtLevel, maxKnivesAtLevel);
             gameUI.SetKnivesCount(knivesCount);
             KnifeSpawn();
             SpawnApplesAndKnives.instance.CreateNewLog();
             levelIndex++;
             gameUI.IncreaseLevel();
-        } 
+        }
         else if (isGameActive && levelIndex % bossLevelIndex == 0) //If boss fight
         {
             Debug.Log("Boss fight!");
-            knivesCount = Random.Range(minKnivesAtLevel * 2,maxKnivesAtLevel * 2);
+            knivesCount = Random.Range(minKnivesAtLevel * 2, maxKnivesAtLevel * 2);
             gameUI.SetKnivesCount(knivesCount);
             KnifeSpawn();
             SpawnApplesAndKnives.instance.CreateNewLog();
             levelIndex++;
             gameUI.IncreaseLevel();
-            
+
         }
     }
     private void LogExplosion()
     {
         Vector3 logPosition = GameObject.FindGameObjectWithTag("Log").transform.position;
         Destroy(GameObject.FindGameObjectWithTag("Log"));
-        Instantiate(destroyableLog,logPosition,Quaternion.identity);
+        Instantiate(destroyableLog, logPosition, Quaternion.identity);
     }
 
 
