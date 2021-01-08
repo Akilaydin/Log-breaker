@@ -13,12 +13,14 @@ public class MenuController : MonoBehaviour
     [SerializeField]
     private Text applesText;
 
-    private void Start() {
+    private void Start()
+    {
         LoadGameScores();
-       
+
     }
-    
-    public void StartNewGame(){
+
+    public void StartNewGame()
+    {
         StartCoroutine(StartNewGameCoroutine());
     }
 
@@ -28,8 +30,9 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    
-    private void LoadGameScores(){
+
+    private void LoadGameScores()
+    {
         applesText.text = Database.instance.LoadAppleScore().ToString();
         scoreText.text = "High score: " + Database.instance.LoadGameScore().ToString();
     }

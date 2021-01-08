@@ -956,7 +956,7 @@ MonoBehaviour:
   appleScore: 0
   levelIndex: 0
   cameraShakeExplosion: {fileID: 5120172917491868638, guid: 7b31cefcb4d911d4d93de432ef6e8f99, type: 3}
-  log: {fileID: 233820339781633397, guid: 72258392fc7ae9849971199ba3e1ad69, type: 3}
+  destroyableLog: {fileID: 4562584663510702077, guid: 1ce54009c7d499e42a1e6325954f331f, type: 3}
   knifeSpawnPos: {x: 0, y: -3.8}
   knife: {fileID: 2927052124373288229, guid: 238acb0f93aed044796e8305740a59bc, type: 3}
   minKnivesAtLevel: 3

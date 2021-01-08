@@ -13,8 +13,8 @@ public class KnifeInLog : MonoBehaviour
     {
         if (other.gameObject.tag == "Knife")
         {
-            Debug.Log("Knife hit spawned knife");
             other.GetComponent<Rigidbody2D>().velocity = new Vector2(other.GetComponent<Rigidbody2D>().velocity.x - Random.Range(1,4), -Random.Range(0,4));
+            other.GetComponent<Rigidbody2D>().gravityScale = 1;
             GameController.instance.GameOver(false);
         }
     }

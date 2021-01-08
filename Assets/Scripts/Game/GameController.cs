@@ -18,14 +18,18 @@ public class GameController : MonoBehaviour
     public int gameScore;
     [HideInInspector]
     public int appleScore;
+    [HideInInspector]
     public int levelIndex;
+    [Header("BossFights")]
+    [SerializeField]
+    [Tooltip("Begin boss fight a every N + 1 level")]
+    private int bossLevelIndex = 4;
 
     [Header("Exploding")]
     [SerializeField]
     private GameObject cameraShakeExplosion;
     [SerializeField]
-    private GameObject log;
-    private Explodable explodable;
+    private GameObject destroyableLog;
 
     [Header("KnivesSpawning")]
     [SerializeField]
@@ -41,7 +45,6 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        explodable = log.GetComponent<Explodable>();
         instance = this;
         gameUI = GetComponent<GameUI>();
     }
@@ -65,13 +68,15 @@ public class GameController : MonoBehaviour
     {
         
         gameScore++;
-        if (gameScore > Database.instance.LoadGameScore())
+
+        if (gameScore > Database.instance.LoadGameScore()) //To save only the highest score.
         {
             Database.instance.SaveGameScore(gameScore);
         }
 
         ScoresController.instance.RefreshScore(gameScore, appleScore);
-        if (knivesCount > 0)
+
+        if (knivesCount > 0) //If there are remaining knives to throw.
         {
             KnifeSpawn();
         }
@@ -115,8 +120,7 @@ public class GameController : MonoBehaviour
         {
             CameraShake();
             LogExplosion();
-            
-            yield return new WaitForSecondsRealtime(0.4f);
+            yield return new WaitForSecondsRealtime(0.5f);
             StartNewLevel();
         }
         else
@@ -127,20 +131,34 @@ public class GameController : MonoBehaviour
     }
 
     private void StartNewLevel(){
-        if (isGameActive){
+        if (isGameActive && levelIndex % bossLevelIndex != 0){ //If not boss fight
             knivesCount = Random.Range(minKnivesAtLevel,maxKnivesAtLevel);
             gameUI.SetKnivesCount(knivesCount);
             KnifeSpawn();
             SpawnApplesAndKnives.instance.CreateNewLog();
             levelIndex++;
             gameUI.IncreaseLevel();
+        } 
+        else if (isGameActive && levelIndex % bossLevelIndex == 0) //If boss fight
+        {
+            Debug.Log("Boss fight!");
+            knivesCount = Random.Range(minKnivesAtLevel * 2,maxKnivesAtLevel * 2);
+            gameUI.SetKnivesCount(knivesCount);
+            KnifeSpawn();
+            SpawnApplesAndKnives.instance.CreateNewLog();
+            levelIndex++;
+            gameUI.IncreaseLevel();
+            
         }
-        
     }
     private void LogExplosion()
     {
+        Vector3 logPosition = GameObject.FindGameObjectWithTag("Log").transform.position;
         Destroy(GameObject.FindGameObjectWithTag("Log"));
+        Instantiate(destroyableLog,logPosition,Quaternion.identity);
     }
+
+
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

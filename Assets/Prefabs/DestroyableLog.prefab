@@ -1154,7 +1154,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6940595684902984193}
   - component: {fileID: 737195094}
-  - component: {fileID: 737195095}
   - component: {fileID: 737195097}
   m_Layer: 0
   m_Name: DestroyableLog
@@ -1223,22 +1222,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &737195095
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4562584663510702077}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.109620094, y: 1.3519802}
-  serializedVersion: 2
-  m_Radius: 0.90194035
 --- !u!114 &737195097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,7 +1234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d755bbeeb93f5f04cb99d208775a9d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionForce: 200
+  explosionForce: 450
+  torqueForce: 100
 --- !u!1 &5184049999217442736
 GameObject:
   m_ObjectHideFlags: 0

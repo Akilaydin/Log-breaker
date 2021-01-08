@@ -101,6 +101,5 @@ public class SpawnApplesAndKnives : MonoBehaviour
         {
             return points;
         }
-
     }
 }

@@ -9,7 +9,6 @@ public class Knife : MonoBehaviour
     public bool isActive = true;
     private Rigidbody2D knifeRB;
     private BoxCollider2D knifeCollider;
-    private bool hasHitApple = false;
 
 
     private void Awake()
